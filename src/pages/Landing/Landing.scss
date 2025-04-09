@@ -1,0 +1,47 @@
+.landing {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  padding: 2rem;
+
+  &__content {
+    text-align: center;
+    color: white;
+    max-width: 800px;
+    
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  &__button {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border: 2px solid white;
+    border-radius: 30px;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: white;
+      color: #2c3e50;
+    }
+  }
+}
