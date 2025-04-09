@@ -10,16 +10,30 @@
     text-align: center;
     color: white;
     max-width: 800px;
+    width: 100%;
+    padding: 0 1rem;
     
     h1 {
       font-size: 3.5rem;
       margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+
+      .movie-vs-text {
+        display: inline;
+        padding-left: 2%;
+        animation-duration: 2s;
+      }
     }
 
     p {
       font-size: 1.5rem;
       margin-bottom: 2rem;
       opacity: 0.9;
+      animation-duration: 1s;
     }
   }
 
@@ -27,6 +41,7 @@
     display: flex;
     gap: 1rem;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   &__button {
@@ -42,6 +57,50 @@
     &:hover {
       background-color: white;
       color: #2c3e50;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+
+    &__content {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    &__button {
+      padding: 0.8rem 1.6rem;
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+
+    &__content {
+      h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
+      }
+    }
+
+    &__buttons {
+      gap: 0.8rem;
+    }
+
+    &__button {
+      padding: 0.7rem 1.4rem;
+      font-size: 0.9rem;
     }
   }
 }

@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { animate } from 'animate.css';
 import Modal from '../../components/Modal/Modal';
+import { authService } from '../../services/authService';
 import './Landing.scss';
 
 const Landing = () => {
-  const dispatch = useDispatch();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: ''
+  });
+
+  const [registerData, setRegisterData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
   const [touchedFields, setTouchedFields] = useState({
     loginEmail: false,
     loginPassword: false,
@@ -22,11 +32,59 @@ const Landing = () => {
     }));
   };
 
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await authService.login({
+        email: loginData.email,
+        password: loginData.password
+      });
+      setShowLoginModal(false);
+      // Optional: Redirect or show success message
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const handleRegisterChange = (e) => {
+    const { name, value } = e.target;
+    setRegisterData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    if (registerData.password !== registerData.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    try {
+      await authService.register({
+        email: registerData.email,
+        password: registerData.password
+      });
+      setShowRegisterModal(false);
+      // Optional: Show success message or redirect
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
     <div className="landing">
       <div className="landing__content">
-        <h1>Welcome to Movie VS</h1>
-        <p>Your ultimate platform for building your top 20 movies</p>
+        <h1>Welcome to <div className="movie-vs-text animate__animated animate__rubberBand">Movie VS</div></h1>
+        <p className="animate__animated animate__bounceInUp">Your ultimate platform for building your top 20 movies</p>
         <div className="landing__buttons">
           <button className="landing__button" onClick={() => setShowRegisterModal(true)}>
             Register
@@ -49,7 +107,7 @@ const Landing = () => {
         }}
         title="Login"
       >
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleLoginSubmit}>
           <div className="form-group">
             <label>
               Email 
@@ -57,6 +115,9 @@ const Landing = () => {
             </label>
             <input 
               type="email" 
+              name="email"
+              value={loginData.email}
+              onChange={handleLoginChange}
               placeholder="Enter your email" 
               required
               onBlur={() => handleBlur('loginEmail')}
@@ -70,6 +131,9 @@ const Landing = () => {
             </label>
             <input 
               type="password" 
+              name="password"
+              value={loginData.password}
+              onChange={handleLoginChange}
               placeholder="Enter your password" 
               required
               onBlur={() => handleBlur('loginPassword')}
@@ -93,7 +157,7 @@ const Landing = () => {
         }}
         title="Register"
       >
-        <form className="auth-form">
+        <form onSubmit={handleRegisterSubmit} className="auth-form">
           <div className="form-group">
             <label>
               Email
@@ -101,6 +165,9 @@ const Landing = () => {
             </label>
             <input 
               type="email" 
+              name="email"
+              value={registerData.email}
+              onChange={handleRegisterChange}
               placeholder="Enter your email" 
               required
               onBlur={() => handleBlur('registerEmail')}
@@ -113,7 +180,10 @@ const Landing = () => {
               {touchedFields.registerPassword && <span className="required">*</span>}
             </label>
             <input 
-              type="password" 
+              type="password"
+              name="password"
+              value={registerData.password}
+              onChange={handleRegisterChange}
               placeholder="Choose a password" 
               required
               onBlur={() => handleBlur('registerPassword')}
@@ -126,7 +196,10 @@ const Landing = () => {
               {touchedFields.registerConfirmPassword && <span className="required">*</span>}
             </label>
             <input 
-              type="password" 
+              type="password"
+              name="confirmPassword"
+              value={registerData.confirmPassword}
+              onChange={handleRegisterChange}
               placeholder="Confirm your password" 
               required
               onBlur={() => handleBlur('registerConfirmPassword')}
