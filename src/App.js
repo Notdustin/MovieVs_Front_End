@@ -11,11 +11,23 @@ import './styles/App.scss';
 function App() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
+
+  console.log("Are we changing?",isAuthenticated);
   return (
     <Router>
       <Routes>
         <Route
           path="/"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/battle" />
+            ) : (
+              <Landing />
+            )
+          }
+        />
+        <Route
+          path="/battle"
           element={
             isAuthenticated ? (
               <div className="app">
@@ -27,10 +39,12 @@ function App() {
                 <Footer />
               </div>
             ) : (
-              <Landing />
+              <Navigate to="/" />
             )
           }
         />
+
+        {/* Catch all route for 404 */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

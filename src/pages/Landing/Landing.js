@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { animate } from 'animate.css';
 import Modal from '../../components/Modal/Modal';
 import { authService } from '../../services/authService';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/authSlice';
 import './Landing.scss';
 
 const Landing = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [loginData, setLoginData] = useState({
@@ -43,12 +47,13 @@ const Landing = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      await authService.login({
+      const userData = await authService.login({
         email: loginData.email,
         password: loginData.password
       });
+      dispatch(login(userData));
       setShowLoginModal(false);
-      // Optional: Redirect or show success message
+      navigate('/battle');
     } catch (error) {
       alert(error);
     }
@@ -74,7 +79,7 @@ const Landing = () => {
         password: registerData.password
       });
       setShowRegisterModal(false);
-      // Optional: Show success message or redirect
+      navigate('/battle');
     } catch (error) {
       alert(error);
     }

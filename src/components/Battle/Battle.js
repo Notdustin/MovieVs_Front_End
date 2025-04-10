@@ -1,7 +1,12 @@
-import React from 'react';
+// import React, { useState } from 'react';
+import { movieService } from '../../services/movieService';
 import './Battle.scss';
 
-const Battle = () => {
+const Battle = async () => {
+
+  const battlePair = await movieService.getMovieBattlePair();
+  console.log("Battle pair in the battle component:", battlePair);
+
   return (
     <div className="battle">
       <h2>Pick A Movie</h2>

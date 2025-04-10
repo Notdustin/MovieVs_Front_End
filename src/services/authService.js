@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 const API_URL = 'http://localhost:8080/api';
 
 export const authService = {
@@ -7,6 +8,7 @@ export const authService = {
         try {
             const response = await axios.post(`${API_URL}/login`, credentials);
             if (response.data.token) {
+                console.log("we have something: ", response.data);
                 localStorage.setItem('user', JSON.stringify(response.data));
             }
             return response.data;
