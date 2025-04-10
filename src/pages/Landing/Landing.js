@@ -104,6 +104,10 @@ const Landing = () => {
         isOpen={showLoginModal}
         onClose={() => {
           setShowLoginModal(false);
+          setLoginData({
+            email: '',
+            password: ''
+          });
           setTouchedFields(prev => ({
             ...prev,
             loginEmail: false,
@@ -115,8 +119,8 @@ const Landing = () => {
         <form className="auth-form" onSubmit={handleLoginSubmit}>
           <div className="form-group">
             <label>
-              Email 
-              {touchedFields.loginEmail && <span className="required">*</span>}
+              Email
+              {touchedFields.loginEmail && !loginData.email && <span className="required">*</span>}
             </label>
             <input 
               type="email" 
@@ -132,7 +136,7 @@ const Landing = () => {
           <div className="form-group">
             <label>
               Password
-              {touchedFields.loginPassword && <span className="required">*</span>}
+              {touchedFields.loginPassword && !loginData.password && <span className="required">*</span>}
             </label>
             <input 
               type="password" 
@@ -153,6 +157,11 @@ const Landing = () => {
         isOpen={showRegisterModal}
         onClose={() => {
           setShowRegisterModal(false);
+          setRegisterData({
+            email: '',
+            password: '',
+            confirmPassword: ''
+          });
           setTouchedFields(prev => ({
             ...prev,
             registerEmail: false,
@@ -166,7 +175,7 @@ const Landing = () => {
           <div className="form-group">
             <label>
               Email
-              {touchedFields.registerEmail && <span className="required">*</span>}
+              {touchedFields.registerEmail && !registerData.email && <span className="required">*</span>}
             </label>
             <input 
               type="email" 
@@ -182,7 +191,7 @@ const Landing = () => {
           <div className="form-group">
             <label>
               Password
-              {touchedFields.registerPassword && <span className="required">*</span>}
+              {touchedFields.registerPassword && !registerData.password && <span className="required">*</span>}
             </label>
             <input 
               type="password"
@@ -198,7 +207,7 @@ const Landing = () => {
           <div className="form-group">
             <label>
               Confirm Password
-              {touchedFields.registerConfirmPassword && <span className="required">*</span>}
+              {touchedFields.registerConfirmPassword && !registerData.confirmPassword && <span className="required">*</span>}
             </label>
             <input 
               type="password"

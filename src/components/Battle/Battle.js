@@ -19,7 +19,7 @@ const Battle = () => {
     <div className="battle">
       <h2>Pick A Movie</h2>
       <div className="battle__container">
-        <div className="battle__movie">
+        <div className="battle__movie animate__animated animate__rotateInDownLeft">
           <div className="movie__placeholder">
             <div className="movie__poster-placeholder">
               <img src={battlePair?.movie_a?.poster_url} alt={battlePair?.movie_a?.title} />
