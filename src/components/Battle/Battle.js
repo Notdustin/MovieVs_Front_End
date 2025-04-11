@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { movieService } from '../../services/movieService';
+import confetti from 'canvas-confetti';
 import 'animate.css';
 import './Battle.scss';
 
@@ -7,6 +8,7 @@ const Battle = () => {
   const [battlePair, setBattlePair] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
+ 
 
   const handleMovieClick = async (movieTitle) => {
     if (isLoading || !battlePair) return;
@@ -16,6 +18,8 @@ const Battle = () => {
       const winner = movieTitle === battlePair?.movie_a?.title ? battlePair?.movie_a : battlePair?.movie_b;
 
       console.log("Winner:", winner);
+      confetti();
+
       
       await movieService.submitBattleWinner(
         winner,
