@@ -27,12 +27,17 @@ export const movieService = {
         }
     },
 
-    // Optional: Add method to submit battle winner
-    submitBattleWinner: async (winnerId, loserId) => {
+    submitBattleWinner: async (winner, movieA, movieB) => {
         try {
-            const response = await axios.post(`${API_URL}/movies/battle-result`, {
-                winnerId,
-                loserId
+            const user = JSON.parse(localStorage.getItem('user'));
+            const response = await axios.post(`${API_URL}/battle`, {
+                winner,
+                movie_a: movieA,
+                movie_b: movieB
+            }, {
+                headers: {
+                    'Authorization': `${user.token}`
+                }
             });
             return response.data;
         } catch (error) {
