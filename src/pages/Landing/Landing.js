@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from '../../components/Modal/Modal';
+import 'animate.css';
 import { authService } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';

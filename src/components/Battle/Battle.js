@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { movieService } from '../../services/movieService';
+import 'animate.css';
 import './Battle.scss';
 
 const Battle = () => {
@@ -17,35 +18,28 @@ const Battle = () => {
 
   return (
     <div className="battle">
-      <h2>Pick A Movie</h2>
+      <h2 className="animate__animated animate__bounceInUp">Pick A Movie</h2>
       <div className="battle__container">
-        <div className="battle__movie animate__animated animate__rotateInDownLeft">
-          <div className="movie__placeholder">
-            <div className="movie__poster-placeholder">
-              <img src={battlePair?.movie_a?.poster_url} alt={battlePair?.movie_a?.title} />
-            </div>
-            <div className="movie__details">
-              <div className="movie__info">
-                <h3>{battlePair?.movie_a?.title}</h3>
-                <span className="movie__year">{battlePair?.movie_a?.year}</span>
-              </div>
-            </div>
-          </div>
+        <div id="movie_a" className="battle__movie battle__movie-left animate__animated animate__rotateInDownLeft">
+          <h3 className="movie__title">{battlePair?.movie_a?.title}</h3>
+          <img 
+            src={battlePair?.movie_a?.poster_url} 
+            alt={battlePair?.movie_a?.title} 
+            className="movie__poster"
+          />
+          <span className="movie__year">{battlePair?.movie_a?.year}</span>
         </div>
+        
         <div className="battle__vs">VS</div>
-        <div className="battle__movie">
-          <div className="movie__placeholder">
-            <div className="movie__poster-placeholder">
-            <img src={battlePair?.movie_b?.poster_url} alt={battlePair?.movie_b?.title} />
-
-            </div>
-            <div className="movie__details">
-              <div className="movie__info">
-                <h3>{battlePair?.movie_b?.title}</h3>
-                <span className="movie__year">{battlePair?.movie_b?.year}</span>
-              </div>
-            </div>
-          </div>
+        
+        <div id="movie_b" className="battle__movie battle__movie-right animate__animated animate__rotateInUpRight">
+          <h3 className="movie__title">{battlePair?.movie_b?.title}</h3>
+          <img 
+            src={battlePair?.movie_b?.poster_url} 
+            alt={battlePair?.movie_b?.title} 
+            className="movie__poster"
+          />
+          <span className="movie__year">{battlePair?.movie_b?.year}</span>
         </div>
       </div>
     </div>
