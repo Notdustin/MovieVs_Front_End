@@ -6,7 +6,8 @@ import Sidebar from './components/Sidebar/Sidebar';
 import Battle from './components/Battle/Battle';
 import Footer from './components/Footer/Footer';
 import Landing from './pages/Landing/Landing';
-import { login } from './store/authSlice';
+import { login, logout } from './store/authSlice';
+import { authService } from './services/authService';
 import './styles/App.scss';
 
 function App() {
@@ -14,10 +15,39 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      dispatch(login(null));
+    const user = authService.getCurrentUser();
+    if (user) {
+      dispatch(login(user));
     }
+
+    // Setup auto-logout timer
+    let logoutTimer;
+    const resetLogoutTimer = () => {
+      if (logoutTimer) clearTimeout(logoutTimer);
+      logoutTimer = setTimeout(() => {
+        dispatch(logout());
+        authService.logout();
+      }, 30 * 60 * 1000); // 30 minutes
+    };
+
+    // Reset timer on user activity
+    const events = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+    const handleUserActivity = () => resetLogoutTimer();
+
+    events.forEach(event => {
+      window.addEventListener(event, handleUserActivity);
+    });
+
+    // Initial timer setup
+    if (user) resetLogoutTimer();
+
+    // Cleanup
+    return () => {
+      if (logoutTimer) clearTimeout(logoutTimer);
+      events.forEach(event => {
+        window.removeEventListener(event, handleUserActivity);
+      });
+    };
   }, [dispatch]);
 
   console.log("Are we changing?",isAuthenticated);

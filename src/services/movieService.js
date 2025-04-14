@@ -39,6 +39,7 @@ export const movieService = {
                     'Authorization': `${user.token}`
                 }
             });
+            console.log('This is what we sent', response.data)
             return response.data;
         } catch (error) {
             throw error.response?.data || error.message;

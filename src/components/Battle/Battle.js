@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { movieService } from '../../services/movieService';
 import confetti from 'canvas-confetti';
+import LoadingModal from '../LoadingModal/LoadingModal';
 import 'animate.css';
 import './Battle.scss';
 
@@ -37,10 +38,17 @@ const Battle = () => {
   };
 
   const fetchBattlePair = async () => {
-    const pair = await movieService.getMovieBattlePair();
-    console.log("Battle pair in the battle component:", pair);
-    setBattlePair(pair);
-    setAnimationKey(prev => prev + 1);
+    setIsLoading(true);
+    try {
+      const pair = await movieService.getMovieBattlePair();
+      console.log("Battle pair in the battle component:", pair);
+      setBattlePair(pair);
+      setAnimationKey(prev => prev + 1);
+    } catch (error) {
+      console.error('Error fetching battle pair:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -49,6 +57,7 @@ const Battle = () => {
 
   return (
     <div className="battle">
+      <LoadingModal isVisible={isLoading} />
       <h2 className="animate__animated animate__bounceInUp">Pick A Movie</h2>
       <div className="battle__container">
         <div 
