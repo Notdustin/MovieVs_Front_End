@@ -9,13 +9,15 @@ const Battle = () => {
   const [battlePair, setBattlePair] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
+  const [clickedMovie, setClickedMovie] = useState(null);
  
 
   const handleMovieClick = async (movieTitle) => {
     if (isLoading || !battlePair) return;
-  
+    
+    setClickedMovie(movieTitle);
+    
     try {
-      setIsLoading(true);
       const winner = movieTitle === battlePair?.movie_a?.title ? battlePair?.movie_a : battlePair?.movie_b;
 
       console.log("Winner:", winner);
@@ -39,6 +41,7 @@ const Battle = () => {
 
   const fetchBattlePair = async () => {
     setIsLoading(true);
+    setClickedMovie(null);
     try {
       const pair = await movieService.getMovieBattlePair();
       console.log("Battle pair in the battle component:", pair);
@@ -63,7 +66,7 @@ const Battle = () => {
         <div 
           key={`movie_a_${animationKey}`}
           id="movie_a" 
-          className="battle__movie battle__movie-left animate__animated animate__rotateInDownLeft" 
+          className={`battle__movie battle__movie-left animate__animated ${clickedMovie === battlePair?.movie_a?.title ? 'animate__zoomOut' : 'animate__zoomIn'}`} 
           onClick={() => handleMovieClick(battlePair?.movie_a?.title)}>
             <h3 className="movie__title">{battlePair?.movie_a?.title}</h3>
             <img 
@@ -79,7 +82,7 @@ const Battle = () => {
         <div 
           key={`movie_b_${animationKey}`}
           id="movie_b" 
-          className="battle__movie battle__movie-right animate__animated animate__rotateInUpRight" 
+          className={`battle__movie battle__movie-right animate__animated ${clickedMovie === battlePair?.movie_b?.title ? 'animate__zoomOut' : 'animate__zoomIn'}`} 
           onClick={() => handleMovieClick(battlePair?.movie_b?.title)}>
           <h3 className="movie__title">{battlePair?.movie_b?.title}</h3>
           <img 
