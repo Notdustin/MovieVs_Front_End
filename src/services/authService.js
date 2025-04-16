@@ -3,12 +3,20 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api';
 
+// Clear user token on startup
+const clearUserOnStartup = () => {
+    localStorage.removeItem('user');
+};
+
+// Execute immediately
+clearUserOnStartup();
+
 export const authService = {
     login: async (credentials) => {
         try {
             const response = await axios.post(`${API_URL}/login`, credentials);
             if (response.data.token) {
-                console.log("we have something: ", response.data);
+                console.log("we have something: ", response.data.token);
                 localStorage.setItem('user', JSON.stringify(response.data));
             }
             return response.data;
