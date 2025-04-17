@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { incrementBattleCount } from '../../store/battleSlice';
 import { movieService } from '../../services/movieService';
 import confetti from 'canvas-confetti';
 import LoadingModal from '../LoadingModal/LoadingModal';
@@ -9,8 +11,8 @@ const Battle = () => {
   const [battlePair, setBattlePair] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
-  const [clickedMovie, setClickedMovie] = useState(null);
- 
+  const [clickedMovie, setClickedMovie] = useState(null); 
+  const dispatch = useDispatch();
 
   const handleMovieClick = async (movieTitle) => {
     if (isLoading || !battlePair) return;
@@ -39,6 +41,20 @@ const Battle = () => {
     }
   };
 
+  const fetchInitialData = async () => {
+    setIsLoading(true);
+    try {
+      const pair = await movieService.getMovieBattlePair();
+      console.log("Battle pair in the battle component:", pair);
+      setBattlePair(pair);
+      setAnimationKey(prev => prev + 1);
+    } catch (error) {
+      console.error('Error fetching initial data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const fetchBattlePair = async () => {
     setIsLoading(true);
     setClickedMovie(null);
@@ -46,6 +62,7 @@ const Battle = () => {
       const pair = await movieService.getMovieBattlePair();
       console.log("Battle pair in the battle component:", pair);
       setBattlePair(pair);
+      dispatch(incrementBattleCount());
       setAnimationKey(prev => prev + 1);
     } catch (error) {
       console.error('Error fetching battle pair:', error);
@@ -55,7 +72,7 @@ const Battle = () => {
   };
 
   useEffect(() => {
-    fetchBattlePair();
+    fetchInitialData();
   }, []);
 
   return (

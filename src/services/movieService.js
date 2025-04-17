@@ -20,7 +20,12 @@ export const movieService = {
 
     getTopTwentyList: async () => {
         try {
-            const response = await axios.get(`${API_URL}/movies/top-twenty`);
+            const user = JSON.parse(localStorage.getItem('user'));
+            const response = await axios.get(`${API_URL}/topmovies`, {
+                headers: {
+                    'Authorization': `${user.token}`
+                }
+            }); 
             return response.data;
         } catch (error) {
             throw error.response?.data || error.message;
